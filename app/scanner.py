@@ -53,6 +53,32 @@ class Scanner:
                 pass
             case "\n":
                 self.line += 1
+            case "*":
+                self.add_token(TokenType.STAR)
+            case "!":
+                self.add_token(
+                    TokenType.BANG_EQUAL
+                    if self.match(expected_char="=")
+                    else TokenType.BANG
+                )
+            case "=":
+                self.add_token(
+                    TokenType.EQUAL_EQUAL
+                    if self.match(expected_char="=")
+                    else TokenType.EQUAL
+                )
+            case "<":
+                self.add_token(
+                    TokenType.LESS_EQUAL
+                    if self.match(expected_char="=")
+                    else TokenType.LESS
+                )
+            case ">":
+                self.add_token(
+                    TokenType.GREATER_EQUAL
+                    if self.match(expected_char="=")
+                    else TokenType.GREATER
+                )
             case _:
                 # Delegate it
                 self.had_error = True
@@ -64,6 +90,14 @@ class Scanner:
         char = self.source[self.current]
         self.current += 1
         return char
+
+    def match(self, expected_char: str) -> bool:
+        if self.is_at_end():
+            return False
+        if self.source[self.current] != expected_char:
+            return False
+        self.current += 1
+        return True
 
     def add_token(
         self,
