@@ -1,3 +1,4 @@
+import sys
 from typing import List, Optional
 
 from app.model.token import Token
@@ -51,7 +52,7 @@ class Scanner:
             case "\n":
                 self.line += 1
             case _:
-                print(f"Unexpected character: {c}")
+                sys.stderr.write(f"[line {self.line}] Error: Unexpected character: {c}")
 
     def advance(self) -> str:
         char = self.source[self.current]
