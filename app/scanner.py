@@ -51,7 +51,7 @@ class Scanner:
             case "\n":
                 self.line += 1
             case _:
-                print(f"Unexpected character: {c}")
+                print(f"[line {self.line}] Error: Unexpected character: {c}")
 
     def advance(self) -> str:
         char = self.source[self.current]
