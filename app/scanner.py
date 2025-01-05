@@ -1,3 +1,4 @@
+import sys
 from typing import List, Optional
 
 from app.model.token import Token
@@ -11,6 +12,7 @@ class Scanner:
         self.start = 0
         self.current = 0
         self.line = 1
+        self.had_error = False
 
     def is_at_end(self) -> bool:
         return self.current >= len(self.source)
@@ -21,6 +23,7 @@ class Scanner:
             self.scan_token()
 
         self.tokens.append(Token(TokenType.EOF, "", None, self.line))
+
         return self.tokens
 
     def scan_token(self) -> None:
@@ -51,7 +54,10 @@ class Scanner:
             case "\n":
                 self.line += 1
             case _:
-                print(f"Unexpected character: {c}")
+                self.had_error = True
+                sys.stderr.write(
+                    f"[line {self.line}] Error: Unexpected character: {c}\n"
+                )
 
     def advance(self) -> str:
         char = self.source[self.current]
