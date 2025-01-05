@@ -88,11 +88,25 @@ class Scanner:
             case '"':
                 self.extract_string()
             case _:
+                if c.isnumeric():
+                    self.extract_number()
+                    return
                 # Delegate it
                 self.had_error = True
                 sys.stderr.write(
                     f"[line {self.line}] Error: Unexpected character: {c}\n"
                 )
+
+    def extract_number(self) -> None:
+        while self.peek().isnumeric():
+            self.advance()
+
+        if self.peek() == "." and self.peek_next().isnumeric():
+            self.advance()
+            while self.peek().isnumeric():
+                self.advance()
+
+        self.add_token(TokenType.NUMBER, float(self.source[self.start : self.current]))
 
     def extract_string(self) -> None:
         while self.peek() != '"' and not self.is_at_end():
@@ -113,6 +127,11 @@ class Scanner:
         if self.is_at_end():
             return "\0"
         return self.source[self.current]
+
+    def peek_next(self) -> str:
+        if self.current + 1 >= len(self.source):
+            return "\0"
+        return self.source[self.current + 1]
 
     def advance(self) -> str:
         char = self.source[self.current]
