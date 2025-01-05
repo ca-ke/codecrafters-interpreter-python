@@ -85,12 +85,29 @@ class Scanner:
                         self.advance()
                 else:
                     self.add_token(TokenType.SLASH)
+            case '"':
+                self.extract_string()
             case _:
                 # Delegate it
                 self.had_error = True
                 sys.stderr.write(
                     f"[line {self.line}] Error: Unexpected character: {c}\n"
                 )
+
+    def extract_string(self) -> None:
+        while self.peek() != '"' and not self.is_at_end():
+            if self.peek() == "\n":
+                self.line += 1
+            self.advance()
+
+        if self.is_at_end():
+            self.had_error = True
+            sys.stderr.write(f"[line {self.line}] Error: Unterminated string.\n")
+            return
+
+        self.advance()
+        value = self.source[self.start + 1 : self.current - 1]
+        self.add_token(TokenType.STRING, value)
 
     def peek(self) -> str:
         if self.is_at_end():
