@@ -79,12 +79,23 @@ class Scanner:
                     if self.match(expected_char="=")
                     else TokenType.GREATER
                 )
+            case "/":
+                if self.match("/"):
+                    while self.peek() != "\n" and not self.is_at_end():
+                        self.advance()
+                else:
+                    self.add_token(TokenType.SLASH)
             case _:
                 # Delegate it
                 self.had_error = True
                 sys.stderr.write(
                     f"[line {self.line}] Error: Unexpected character: {c}\n"
                 )
+
+    def peek(self) -> str:
+        if self.is_at_end():
+            return "\0"
+        return self.source[self.current]
 
     def advance(self) -> str:
         char = self.source[self.current]
