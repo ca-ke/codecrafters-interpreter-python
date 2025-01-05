@@ -1,5 +1,7 @@
 import sys
 
+from app.scanner import Scanner
+
 
 def main():
     if len(sys.argv) < 3:
@@ -17,7 +19,9 @@ def main():
         file_contents = file.read()
 
         if file_contents:
-            raise NotImplementedError("Scanner not implemented")
+            scanner = Scanner(file_contents)
+            for token in scanner.scan_tokens():
+                print(token)
         else:
             print(
                 "EOF  null"
