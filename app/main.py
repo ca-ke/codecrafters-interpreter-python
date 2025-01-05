@@ -22,6 +22,8 @@ def main():
             scanner = Scanner(file_contents)
             for token in scanner.scan_tokens():
                 print(token)
+            if scanner.had_error:
+                sys.exit(65)
         else:
             print(
                 "EOF  null"
