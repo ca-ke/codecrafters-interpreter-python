@@ -49,3 +49,7 @@ class TokenType(Enum):
     WHILE = auto()
 
     EOF = auto()
+
+    @classmethod
+    def values(cls):
+        return list(cls)
