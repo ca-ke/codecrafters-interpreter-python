@@ -91,6 +91,9 @@ class Scanner:
                 if c.isnumeric():
                     self.extract_number()
                     return
+                elif self.is_alpha(c):
+                    self.extract_identifier()
+                    return
                 # Delegate it
                 self.had_error = True
                 sys.stderr.write(
@@ -107,6 +110,17 @@ class Scanner:
                 self.advance()
 
         self.add_token(TokenType.NUMBER, float(self.source[self.start : self.current]))
+
+    def extract_identifier(self) -> None:
+        while self.is_alpha_numeric(self.peek()):
+            self.advance()
+        self.add_token(TokenType.IDENTIFIER)
+
+    def is_alpha_numeric(self, c: str) -> bool:
+        return c.isnumeric() or self.is_alpha(c)
+
+    def is_alpha(self, c: str) -> bool:
+        return (c >= "a" and c <= "z") or (c >= "A" and c <= "Z") or c == "_"
 
     def extract_string(self) -> None:
         while self.peek() != '"' and not self.is_at_end():
