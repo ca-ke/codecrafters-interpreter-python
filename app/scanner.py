@@ -114,7 +114,14 @@ class Scanner:
     def extract_identifier(self) -> None:
         while self.is_alpha_numeric(self.peek()):
             self.advance()
-        self.add_token(TokenType.IDENTIFIER)
+
+        lexeme = self.source[self.start : self.current]
+        token_type = next(
+            token_type for token_type in TokenType.values() if token_type == lexeme
+        )
+        if token_type is None:
+            token_type = TokenType.IDENTIFIER
+        self.add_token(token_type)
 
     def is_alpha_numeric(self, c: str) -> bool:
         return c.isnumeric() or self.is_alpha(c)
