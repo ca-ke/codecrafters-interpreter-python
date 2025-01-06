@@ -1,51 +1,60 @@
 from enum import Enum, auto
+from typing import List
 
 
 class TokenType(Enum):
-    # Single-character tokens
-    LEFT_PAREN = auto()
-    RIGHT_PAREN = auto()
-    LEFT_BRACE = auto()
-    RIGHT_BRACE = auto()
-    COMMA = auto()
-    DOT = auto()
-    MINUS = auto()
-    PLUS = auto()
-    SEMICOLON = auto()
-    SLASH = auto()
-    STAR = auto()
+    # Single-character tokens (not reserved)
+    LEFT_PAREN = (auto(), False)
+    RIGHT_PAREN = (auto(), False)
+    LEFT_BRACE = (auto(), False)
+    RIGHT_BRACE = (auto(), False)
+    COMMA = (auto(), False)
+    DOT = (auto(), False)
+    MINUS = (auto(), False)
+    PLUS = (auto(), False)
+    SEMICOLON = (auto(), False)
+    SLASH = (auto(), False)
+    STAR = (auto(), False)
 
-    # One or two character tokens
-    BANG = auto()
-    BANG_EQUAL = auto()
-    EQUAL = auto()
-    EQUAL_EQUAL = auto()
-    GREATER = auto()
-    GREATER_EQUAL = auto()
-    LESS = auto()
-    LESS_EQUAL = auto()
+    # One or two character tokens (not reserved)
+    BANG = (auto(), False)
+    BANG_EQUAL = (auto(), False)
+    EQUAL = (auto(), False)
+    EQUAL_EQUAL = (auto(), False)
+    GREATER = (auto(), False)
+    GREATER_EQUAL = (auto(), False)
+    LESS = (auto(), False)
+    LESS_EQUAL = (auto(), False)
 
-    # Literals
-    IDENTIFIER = auto()
-    STRING = auto()
-    NUMBER = auto()
+    # Literals (not reserved)
+    IDENTIFIER = (auto(), False)
+    STRING = (auto(), False)
+    NUMBER = (auto(), False)
 
-    # Keywords
-    AND = auto()
-    CLASS = auto()
-    ELSE = auto()
-    FALSE = auto()
-    FUN = auto()
-    FOR = auto()
-    IF = auto()
-    NIL = auto()
-    OR = auto()
-    PRINT = auto()
-    RETURN = auto()
-    SUPER = auto()
-    THIS = auto()
-    TRUE = auto()
-    VAR = auto()
-    WHILE = auto()
+    # Reserved Keywords (marked as reserved=True)
+    AND = (auto(), True)
+    CLASS = (auto(), True)
+    ELSE = (auto(), True)
+    FALSE = (auto(), True)
+    FUN = (auto(), True)
+    FOR = (auto(), True)
+    IF = (auto(), True)
+    NIL = (auto(), True)
+    OR = (auto(), True)
+    PRINT = (auto(), True)
+    RETURN = (auto(), True)
+    SUPER = (auto(), True)
+    THIS = (auto(), True)
+    TRUE = (auto(), True)
+    VAR = (auto(), True)
+    WHILE = (auto(), True)
 
-    EOF = auto()
+    EOF = (auto(), False)
+
+    def __init__(self, value, reserved):
+        self._value_ = value
+        self.reserved = reserved
+
+    @staticmethod
+    def reserved_keywords() -> List:
+        return [token for token in TokenType if token.reserved]
