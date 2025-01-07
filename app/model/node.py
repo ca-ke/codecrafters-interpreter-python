@@ -32,9 +32,6 @@ class Literal(Expr):
     def accept(self, visitor) -> Any:
         return visitor.visit_literal_expr(self)
 
-    def __str__(self) -> str:
-        return f"{self.value}"
-
 
 class Unary(Expr):
     def __init__(self, operator: Token, right: "Expr") -> None:
