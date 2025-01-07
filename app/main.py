@@ -2,6 +2,7 @@ import sys
 
 from app.patterns.parser import Parser
 from app.patterns.scanner import Scanner
+from app.patterns.visitor import AstPrinter
 
 
 def main():
@@ -28,8 +29,9 @@ def main():
                     sys.exit(65)
             else:
                 scanner = Scanner(file_contents)
+                astPrinter = AstPrinter()
                 parser = Parser(scanner.scan_tokens())
-                print(parser.parse())
+                print(astPrinter.print(parser.parse()))
         else:
             print(
                 "EOF  null"

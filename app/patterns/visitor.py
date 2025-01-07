@@ -1,6 +1,6 @@
-from typing import Protocol, Any
+from typing import Optional, Protocol, Any
 
-from app.model.node import Binary, Grouping, Literal, Unary
+from app.model.node import Binary, Expr, Grouping, Literal, Unary
 
 
 class ExprVisitor(Protocol):
@@ -18,6 +18,11 @@ class ExprVisitor(Protocol):
 
 
 class AstPrinter(ExprVisitor):
+    def print(self, expr: Optional["Expr"]) -> str:
+        if expr is None:
+            return "nil"
+        return expr.accept(self)
+
     def visit_binary_expr(self, expr: Binary) -> str:
         return f"({expr.operator} {expr.left.accept(self)} {expr.right.accept(self)})"
 
